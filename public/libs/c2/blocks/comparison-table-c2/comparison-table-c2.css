@@ -1,0 +1,794 @@
+/* ============================================================
+   COMPARISON TABLE — C2 / S2A Design Language
+   Styled to match Acrobat "Compare plans" reference design
+   Prototype version - needs point to buttons and tokens else where 
+   s2a-tokens used align as much as possible
+   final should be normal milo block optimization
+   ============================================================ */
+
+:root {
+  --ct-row-border: #e8e8e8;
+  --ct-card-border: #d4d4d4;
+  --ct-blue-cta: #4046CA;
+  --ct-blue-cta-hover: #3236a8;
+  --ct-bg-white: #ffffff;
+  --ct-bg-light: #f8f8f8;
+  /* vet if these will be needed not s2a tokens */
+  --ct-text-primary: #1a1a1a;
+  --ct-text-secondary: #6e6e6e;
+  --ct-text-muted: #959595;
+  --ct-highlight-border: #1a1a1a;
+  --ct-font-family: 'Adobe Clean', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ct-checkmark-color: #1a1a1a;
+  /* HD container — mirrors .container-hd in s2a-layout-grids.css */
+  --ct-hd-max-width: var(--s2a-grid-hd-max-width, 1920px);
+  --ct-hd-width: var(--s2a-grid-container-width, 83.4%);
+}
+
+/* ————————————————————————————————
+   Block container
+   ———————————————————————————————— */
+/* Full-bleed outer shell — background fills edge-to-edge */
+.comparison-table-c2 {
+  font-family: var(--ct-font-family);
+  color: var(--ct-text-primary);
+  background-color: var(--ct-bg-white);
+  padding: var(--spacing-xl) 0;
+}
+
+/* HD container applied to inner content — max 1920px, 83.4% centered */
+.comparison-table-c2 .header-content-wrapper,
+.comparison-table-c2 .table-container {
+  width: 100%;
+  max-width: var(--ct-hd-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--spacing-lg, 24px);
+  padding-right: var(--spacing-lg, 24px);
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .comparison-table-c2 .header-content-wrapper,
+  .comparison-table-c2 .table-container {
+    width: var(--ct-hd-width);
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.comparison-table-c2 .table-body.hide {
+  display: none;
+}
+
+.comparison-table-c2 :is(p, h1, h2, h3, h4, h5, h6) {
+  margin: 0;
+}
+
+/* ————————————————————————————————
+   Header — Plan card grid
+   ———————————————————————————————— */
+.comparison-table-c2 .header-content {
+  padding-bottom: var(--spacing-xl);
+}
+
+.comparison-table-c2 .header-content-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-xs, 8px);
+  align-items: start;
+}
+
+/* "Compare plans" label — aligns with the table-row-header column */
+.comparison-table-c2 .header-item-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding-bottom: var(--spacing-md);
+}
+
+.comparison-table-c2 .header-item-header h2 {
+  font-size: var(--s2a-typography-font-size-body-lg);
+  line-height: var(--s2a-typography-line-height-body-lg);
+  letter-spacing: var(--s2a-typography-letter-spacing-body-lg);
+  font-weight: 900;
+  color: var(--ct-text-primary);
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+.comparison-table-c2 .header-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.comparison-table-c2 .header-item:first-of-type {
+  margin-inline-end: 0;
+}
+
+.comparison-table-c2 .header-item img {
+  width: 24px;
+  height: 24px;
+}
+
+/* ————————————————————————————————
+   Plan card wrapper (header-item-card)
+   Card styling lives on the header-item, not the inner container.
+   ———————————————————————————————— */
+.comparison-table-c2 .header-item-card {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--ct-card-border);
+  padding: var(--spacing-md) var(--spacing-sm);
+  background: var(--ct-bg-white);
+  transition: box-shadow 0.2s ease;
+}
+
+.comparison-table-c2 .header-item-card:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Last plan card — "Best value" — thick black border */
+.comparison-table-c2 .header-item-card:last-of-type {
+  border: 2.5px solid var(--ct-highlight-border);
+}
+
+/* Inner sub-header containers inside card — transparent, no border */
+.comparison-table-c2 .header-item-card .sub-header-item-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  position: relative;
+  justify-content: center;
+}
+
+/* Description (category label like "PDF viewing") */
+.comparison-table-c2 .sub-header-item-container .description {
+  text-align: center;
+  padding: 0 0 var(--spacing-xs);
+  font-size: 12px;
+  line-height: 1.4;
+  min-height: 15px;
+  display: block;
+  color: var(--ct-text-secondary);
+  font-weight: 400;
+}
+
+.comparison-table-c2 .sub-header-item-container .description.zero-height {
+  padding: 0;
+}
+
+/* Plan name heading */
+.comparison-table-c2 .sub-header-item-container :is(h1, h2, h3, h4, h5, h6) {
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  word-break: break-word;
+  color: var(--ct-text-primary);
+}
+
+/* Price */
+.comparison-table-c2 .price {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ct-text-primary);
+  display: flex;
+  margin-top: 2px;
+}
+
+.comparison-table-c2 .price.price-strikethrough {
+  font-size: 12px;
+}
+
+/* Billing detail (em tag) */
+.comparison-table-c2 .sub-header-item-container em {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  font-style: normal;
+  color: var(--ct-text-secondary);
+}
+
+/* CTA-holding last container inside card — spacing only */
+.comparison-table-c2 .header-item-card .sub-header-item-container:last-of-type {
+  padding: var(--spacing-sm) 0 0;
+}
+
+.comparison-table-c2 .sub-header-item-container p:not(:has(picture, a)) {
+  display: flex;
+  align-items: center;
+  word-break: break-word;
+}
+
+.comparison-table-c2 .sub-header-item-container :is(p, h1, h2, h3, h4, h5, h6) {
+  text-align: center;
+  word-break: break-word;
+  color: var(--ct-text-primary);
+}
+
+.comparison-table-c2 .sub-header-item-container .description em a {
+  color: var(--ct-text-primary);
+}
+
+/* ————————————————————————————————
+   CTA buttons
+   ———————————————————————————————— */
+.comparison-table-c2 .sub-header-item-container .btn-container {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  width: 100%;
+  margin-top: var(--spacing-sm);
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.comparison-table-c2 .action-area,
+.comparison-table-c2 .action-area :is(.con-button, strong, a) {
+  display: flex;
+}
+
+/* button-lg from styles.css handles border-radius, padding, min-height, typography.
+   Only comparison-table-specific additions needed here. */
+.comparison-table-c2 .action-area .con-button {
+  min-width: 100px;
+}
+
+.comparison-table-c2 .btn-container.has-multiple .action-area {
+  max-width: unset;
+}
+
+.comparison-table-c2 .sub-header-item-container .btn-container p,
+.comparison-table-c2 .sub-header-item-container .btn-container p :not(em a) {
+  width: 100%;
+}
+
+/* ————————————————————————————————
+   Fallback CTA styles (when decorateButtons hasn't run)
+   Targets raw strong>a and em>a patterns
+   ———————————————————————————————— */
+.comparison-table-c2 .sub-header-item-container:last-of-type a,
+.comparison-table-c2 .sub-header-item-container p:last-child a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 75px;
+  padding: 7px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+  min-width: 100px;
+  min-height: 36px;
+  box-sizing: border-box;
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+
+/* Filled blue — strong > a (Free trial) */
+.comparison-table-c2 .sub-header-item-container:last-of-type strong a,
+.comparison-table-c2 .sub-header-item-container p:last-child strong a {
+  background-color: #3b63fb;
+  border: 2px solid #3b63fb;
+  color: #fff;
+}
+
+.comparison-table-c2 .sub-header-item-container:last-of-type strong a:hover,
+.comparison-table-c2 .sub-header-item-container p:last-child strong a:hover {
+  background-color: #274dea;
+  border-color: #274dea;
+  color: #fff;
+}
+
+/* Outline — em > a (Get free app) */
+.comparison-table-c2 .sub-header-item-container:last-of-type em a,
+.comparison-table-c2 .sub-header-item-container p:last-child em a {
+  background-color: transparent;
+  border: 2px solid var(--ct-text-primary);
+  color: var(--ct-text-primary);
+  font-style: normal;
+}
+
+.comparison-table-c2 .sub-header-item-container:last-of-type em a:hover,
+.comparison-table-c2 .sub-header-item-container p:last-child em a:hover {
+  background-color: var(--ct-text-primary);
+  color: #fff;
+}
+
+/* ————————————————————————————————
+   Table containers (collapsible sections)
+   ———————————————————————————————— */
+.comparison-table-c2 .table-container {
+  border: none;
+  border-top: 1px solid var(--ct-row-border);
+  border-radius: 0;
+}
+
+.comparison-table-c2 .header-content-dummy+.table-container {
+  margin-top: 0;
+}
+
+/* Section toggle button — uses body-lg typography */
+.comparison-table-c2 .table-column-header button {
+  width: 100%;
+  min-height: 56px;
+  border: none;
+  font-size: var(--s2a-typography-font-size-body-lg);
+  line-height: var(--s2a-typography-line-height-body-lg);
+  letter-spacing: var(--s2a-typography-letter-spacing-body-lg);
+  font-weight: 900;
+  text-align: left;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) 0;
+  font-family: var(--ct-font-family);
+  color: var(--ct-text-primary);
+  cursor: pointer;
+  position: relative;
+}
+
+.comparison-table-c2 .table-column-header button:hover {
+  cursor: pointer;
+}
+
+/* Collapsed container border radius */
+.comparison-table-c2 .table-container:has(button[aria-expanded="false"]) {
+  border-radius: 0;
+}
+
+.comparison-table-c2 .table-container button[aria-expanded="false"] {
+  border-radius: 0;
+}
+
+.comparison-table-c2 .table-column-header :is(h1, h2, h3, h4, h5, h6) {
+  max-width: calc(100% - 40px);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+/* ————————————————————————————————
+   Table rows (feature comparison)
+   ———————————————————————————————— */
+.comparison-table-c2 .table-row {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 0;
+}
+
+.comparison-table-c2 .table-row:not(:last-child) {
+  border-bottom: 1px solid var(--ct-row-border);
+}
+
+/* Row header (feature name, left column) — uses eyebrow typography + dotted underline */
+.comparison-table-c2 .table-row-header {
+  text-align: center;
+  font-size: var(--s2a-typography-font-size-eyebrow);
+  font-weight: var(--s2a-font-weight-adobe-clean-bold);
+  line-height: var(--s2a-typography-line-height-eyebrow);
+  letter-spacing: var(--s2a-typography-letter-spacing-eyebrow);
+  color: var(--s2a-color-content-eyebrow);
+  padding: var(--spacing-md) 0;
+  display: inline;
+  margin-inline-end: var(--spacing-sm);
+  grid-column: 1 / -1;
+  margin: 0 auto;
+}
+
+.comparison-table-c2 .table-row-header p {
+  display: inline;
+}
+
+.comparison-table-c2 .table-row-header p span[data-tooltip],
+.comparison-table-c2 .table-row-header p .milo-tooltip {
+  text-decoration: none;
+}
+
+.comparison-table-c2 .table-row-header:has(wbr):has(a) {
+  display: inline;
+}
+
+.comparison-table-c2 .table-row-header.text-only {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.comparison-table-c2 .table-row-header.minimal-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* ————————————————————————————————
+   Table cells (value columns)
+   ———————————————————————————————— */
+.comparison-table-c2 .table-cell {
+  padding: var(--spacing-md) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.comparison-table-c2 .table-cell p {
+  text-align: center;
+  min-height: 18px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--ct-text-primary);
+}
+
+/* Remove default cell inner borders */
+.comparison-table-c2 .table-cell div {
+  border: none;
+  border-radius: 0;
+  width: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: transparent !important;
+}
+
+.comparison-table-c2 .table-cell>p:nth-child(2) {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* ————————————————————————————————
+   Cell backgrounds
+   ———————————————————————————————— */
+/* Override alternating background — keep all white */
+.comparison-table-c2 .table-container,
+.comparison-table-c2 .table-container .table-row .table-cell:nth-child(even) div,
+.comparison-table-c2 .header-content:not(.sticky) .header-content-wrapper .header-item:nth-child(even) .sub-header-item-container:not(:last-of-type) {
+  background-color: var(--ct-bg-white);
+}
+
+.comparison-table-c2 .table-row .table-cell:not(.hidden):not(:nth-child(2)) div,
+.comparison-table-c2 .header-item:not(.hidden):not(:nth-child(2)) .sub-header-item-container:not(:last-of-type) {
+  background-color: transparent;
+}
+
+/* ————————————————————————————————
+   Icons
+   NOTE: cell indicators use inline SVGs — checkmark (.icon-checkmark)
+   sourced from the Milo icon system, dash (.icon-dash) from
+   S2_Icon_UIDash_Size50_N.svg. The section toggle chevron (.toggle-icon)
+   is CSS-only (no SVG). Tooltip icons use .icon-milo from Milo icons.
+   ———————————————————————————————— */
+
+/* Base icon wrapper */
+.comparison-table-c2 .icon {
+  display: flex;
+  font-size: 20px;
+}
+
+.comparison-table-c2 .icon svg {
+  top: unset;
+}
+
+/* Checkmark — green on primary/highlighted columns */
+.comparison-table-c2 .table-container .primary-cell .icon-checkmark path {
+  color: #05834E;
+}
+
+/* Dash — S2_Icon_UIDash_Size50_N, muted via fill-opacity on the SVG path */
+.comparison-table-c2 .icon-dash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Toggle chevron — CSS-only, no SVG */
+.comparison-table-c2 .toggle-icon {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-image: none !important;
+}
+
+.comparison-table-c2 .toggle-icon::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--ct-text-primary);
+  border-bottom: 2px solid var(--ct-text-primary);
+  transform: rotate(225deg);
+  transition: transform 0.25s ease;
+  display: block;
+}
+
+.comparison-table-c2 button[aria-expanded="false"] .toggle-icon::before {
+  transform: rotate(45deg);
+}
+
+/* Tooltip icons */
+.comparison-table-c2 span[data-tooltip] .icon-milo:hover {
+  cursor: pointer;
+}
+
+.comparison-table-c2 span[data-tooltip] .icon-milo:hover path {
+  color: var(--ct-blue-cta);
+}
+
+.comparison-table-c2 .milo-tooltip svg {
+  height: 12px;
+  width: 12px;
+}
+
+/* ————————————————————————————————
+   Sticky header
+   ———————————————————————————————— */
+.comparison-table-c2 .header-content.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  width: 100%;
+  padding: var(--spacing-sm) 0;
+  background: transparent;
+}
+
+/* Progressive blur + gradient fade — extends below the header into the table */
+.comparison-table-c2 .header-content.sticky::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: -56px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    var(--ct-bg-light) 50%,
+    transparent 100%
+  );
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 82%);
+  mask-image: linear-gradient(to bottom, black 40%, transparent 82%);
+}
+
+.comparison-table-c2 .header-content.sticky .header-content-wrapper {
+  justify-content: space-between;
+}
+
+/* Hide heading text in the first label column — keeps grid column intact so cards don't shift */
+.comparison-table-c2 .header-content.sticky .header-item-header {
+  visibility: hidden;
+}
+
+.comparison-table-c2 .header-content.sticky .sub-header-item-container {
+  border: none;
+}
+
+.comparison-table-c2 .header-content.sticky .sub-header-item-container:nth-of-type(2),
+.comparison-table-c2 .header-content.sticky .sub-header-item-container:last-child .description,
+.comparison-table-c2 .header-content.sticky .sub-header-item-container .mobile-filter-select {
+  display: none;
+}
+
+.comparison-table-c2 .header-content.sticky .sub-header-item-container:first-child {
+  padding-bottom: 0;
+}
+
+/* ————————————————————————————————
+   Mobile filter / column selection
+   ———————————————————————————————— */
+.comparison-table-c2 .mobile-filter-select {
+  width: 100%;
+  height: 22px;
+  background: transparent url('./img/down-arrow-filter.svg') center no-repeat;
+  display: block;
+  cursor: pointer;
+  color: transparent;
+  position: absolute;
+  border: none;
+  border-top: 1px solid var(--ct-card-border);
+  bottom: 1px;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.comparison-table-c2 .mobile-filter-select option {
+  color: var(--ct-text-primary);
+}
+
+/* ————————————————————————————————
+   Padding adjustments for card first/last containers
+   ———————————————————————————————— */
+.comparison-table-c2 .sub-header-item-container:first-child:not(:has(.mobile-filter-select)) {
+  padding-bottom: var(--spacing-xs);
+}
+
+.comparison-table-c2 .sub-header-item-container:first-child {
+  padding-bottom: 30px;
+}
+
+/* ————————————————————————————————
+   Accessibility
+   ———————————————————————————————— */
+.comparison-table-c2 .accessibility-header-row {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.comparison-table-c2 .header-item.hidden,
+.comparison-table-c2 .table-cell.hidden,
+.comparison-table-c2 .accessibility-header-cell.hidden {
+  display: none;
+}
+
+/* ————————————————————————————————
+   Dark theme overrides
+   ———————————————————————————————— */
+.dark .comparison-table-c2 .table-container :not(a) {
+  color: var(--ct-text-primary);
+}
+
+.dark .comparison-table-c2 .header-content .description,
+.dark .comparison-table-c2 .header-content .description a {
+  color: #fff;
+}
+
+.dark .comparison-table-c2 .header-content.sticky .action-area a:not(.blue) {
+  border-color: var(--text-color);
+  color: var(--text-color);
+}
+
+.dark .comparison-table-c2 .header-content.sticky .action-area a:not(.blue):hover {
+  background-color: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+.dark .comparison-table-c2 .header-content.sticky .action-area .fill {
+  background: var(--text-color);
+  border-color: var(--text-color);
+  color: #fff;
+}
+
+.dark .comparison-table-c2 .header-content.sticky .action-area .fill:hover {
+  background: #000;
+  border-color: #000;
+}
+
+[dir="rtl"] .comparison-table-c2 .price {
+  direction: ltr;
+}
+
+/* ================================================================
+   RESPONSIVE — Tablet (≥600px)
+   ================================================================ */
+@media screen and (min-width: 600px) {
+  .comparison-table-c2 .table-column-header button {
+    padding: var(--spacing-md) 0;
+  }
+
+  .comparison-table-c2 .table-column-header :is(h1, h2, h3, h4, h5, h6) {
+    max-width: calc(100% - 40px);
+  }
+
+  .comparison-table-c2 .sub-header-item-container .btn-container {
+    flex-direction: row;
+  }
+
+  .comparison-table-c2 .sub-header-item-container .btn-container p,
+  .comparison-table-c2 .sub-header-item-container .btn-container p :not(em a) {
+    width: auto;
+  }
+}
+
+/* ================================================================
+   RESPONSIVE — Desktop (≥900px)
+   ================================================================ */
+@media screen and (min-width: 900px) {
+  .comparison-table-c2 {
+    padding: var(--spacing-3xl) 0;
+  }
+
+  .comparison-table-c2 .table-row,
+  .comparison-table-c2 .header-content-wrapper {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  /* Show "Compare plans" label on desktop */
+  .comparison-table-c2 .header-content-wrapper .header-item:first-child {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: var(--spacing-lg);
+  }
+
+  .comparison-table-c2 .header-content-wrapper .header-item:first-child :is(h1, h2, h3, h4, h5, h6) {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1.2;
+  }
+
+  .comparison-table-c2 .table-row-header {
+    display: inline;
+    text-align: start;
+    padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 0;
+    grid-column: auto;
+    margin: 0;
+    margin-inline-end: var(--spacing-sm);
+  }
+
+  .comparison-table-c2 .table-cell {
+    padding: var(--spacing-md) 0;
+  }
+
+  .comparison-table-c2 .mobile-filter-select {
+    display: none;
+  }
+
+  .comparison-table-c2 .sub-header-item-container:first-child {
+    padding-bottom: var(--spacing-xs);
+  }
+
+  .comparison-table-c2 .table-column-header :is(h1, h2, h3, h4, h5, h6) {
+    max-width: calc(100% - 36px);
+  }
+
+  .comparison-table-c2 .table-column-header button {
+    justify-content: space-between;
+    position: static;
+  }
+
+  .comparison-table-c2 .toggle-icon {
+    position: static;
+  }
+}
+
+/* ================================================================
+   RESPONSIVE — Wide Desktop (≥1200px)
+   ================================================================ */
+@media screen and (min-width: 1200px) {
+  .comparison-table-c2 .table-row,
+  .comparison-table-c2 .header-content-wrapper {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  .comparison-table-c2 .sub-header-item-container :is(h1, h2, h3, h4, h5, h6) {
+    font-size: 22px;
+  }
+
+  .comparison-table-c2 .price {
+    font-size: 15px;
+  }
+}
